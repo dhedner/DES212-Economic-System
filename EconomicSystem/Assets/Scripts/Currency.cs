@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Currency", menuName = "Currency")]
 public class Currency : ScriptableObject
 {
-    public int amount;
+    public int amount = 0;
 }
