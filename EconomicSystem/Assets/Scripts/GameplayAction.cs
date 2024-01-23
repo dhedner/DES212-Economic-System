@@ -8,4 +8,5 @@ public class GameplayAction : ScriptableObject
 {
     public int cost = 0;
     public int rate = 1;
+    public int phaseThreshold = 0;
 }

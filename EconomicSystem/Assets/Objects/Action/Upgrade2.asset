@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd52846d4dde9c04888cc9e7c1318cfa, type: 3}
-  m_Name: Generate
+  m_Name: Upgrade2
   m_EditorClassIdentifier: 
   cost: 0
   rate: 1

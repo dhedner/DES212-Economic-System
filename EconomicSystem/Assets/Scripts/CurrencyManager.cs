@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,20 +6,22 @@ using UnityEngine.UI;
 
 public class CurrencyManager : MonoBehaviour
 {
-    [SerializeField] Currency geneticMaterial;
-    [SerializeField] Currency DNA;
-    [SerializeField] Currency genome;
+    public static event Action<Currency> OnCurrencyChanged;
 
-    [SerializeField] Button GenerateButton;
-    [SerializeField] Button ResearchButton;
-    [SerializeField] Button StabilizeButton;
-    [SerializeField] Button RecycleButton;
+    public Currency geneticMaterialCurrency;
+    public Currency DNACurrency;
+    public Currency genomeCurrency;
+    public Currency researchLevelCurrency;
 
-    public int researchLevel = 0;
+    public Button GenerateButton;
+    public Button ResearchButton;
+    public Button StabilizeButton;
+    public Button RecycleButton;
 
-    private int _DNACost = 10;
-    private int _genomeCost = 10;
-    private int _researchCost = 100;
+    public GameplayAction generateAction;
+    public GameplayAction researchAction;
+    public GameplayAction stabilizeAction;
+    public GameplayAction recycleAction;
 
     void Start()
     {
@@ -45,60 +48,50 @@ public class CurrencyManager : MonoBehaviour
 
     void Update()
     {
-        GameObject.Find("GameplayCanvas/GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genetic Material: " + geneticMaterial.amount.ToString();
-        GameObject.Find("GameplayCanvas/DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + DNA.amount.ToString();
-        GameObject.Find("GameplayCanvas/GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genomes: " + genome.amount.ToString();
-        GameObject.Find("GameplayCanvas/ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + researchLevel.ToString();
+        GameObject.Find("GameplayCanvas/GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genetic Material: " + geneticMaterialCurrency.amount.ToString();
+        GameObject.Find("GameplayCanvas/DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + DNACurrency.amount.ToString();
+        GameObject.Find("GameplayCanvas/GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genomes: " + genomeCurrency.amount.ToString();
+        GameObject.Find("GameplayCanvas/ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + researchLevelCurrency.amount.ToString();
     }
 
-    void IncreaseGeneticMaterial()
+    public void ChangeCurrencyAmount(Currency currency, int amount)
     {
-        //geneticMaterial.amount += geneticMaterial.rate;
-        Debug.Log("Currency increased: " + geneticMaterial.amount);
-    }
-
-    void IncreaseDNA()
-    {
-        DNA.amount += 1;
-        Debug.Log("DNA increased: " + DNA.amount);
-    }
-
-    void IncreaseGenome()
-    {
-        if (geneticMaterial.amount < _genomeCost)
+        if (currency != null)
         {
-            Debug.Log("Not enough currency to synthesize");
-            return;
+            currency.amount += amount;
+            OnCurrencyChanged?.Invoke(currency);
         }
-
-        geneticMaterial.amount -= _genomeCost;
-        genome.amount += 1;
-        Debug.Log("Genome increased: " + genome.amount);
+        else
+        {
+            Debug.LogError("Currency object is null.");
+        }
     }
 
-    void IncreaseResearch()
+    public void ChangeResearchLevel(int amount)
     {
-        if (geneticMaterial.amount < _researchCost)
-        {
-            Debug.Log("Not enough genetic material to research");
-            return;
-        }
-
-        geneticMaterial.amount -= _researchCost;
-        researchLevel += 1;
-        Debug.Log("Research increased: " + researchLevel);
+        geneticMaterialCurrency.amount -= researchAction.cost;
+        researchLevelCurrency.amount += amount;
+        OnCurrencyChanged?.Invoke(researchLevelCurrency);
     }
 
-    void RecycleDNA()
+    public void IncreaseGeneticMaterial()
     {
-        if (DNA.amount < 1)
-        {
-            Debug.Log("Not enough DNA to recycle");
-            return;
-        }
+        ChangeCurrencyAmount(geneticMaterialCurrency, generateAction.rate);
+    }
 
-        geneticMaterial.amount += _DNACost;
-        DNA.amount -= 1;
-        Debug.Log("DNA recycled");
+    public void IncreaseResearch()
+    {
+        ChangeResearchLevel(1);
+    }
+
+    public void IncreaseDNA()
+    {
+        ChangeCurrencyAmount(DNACurrency, stabilizeAction.rate);
+    }
+
+    public void RecycleDNA()
+    {
+        ChangeCurrencyAmount(DNACurrency, -recycleAction.cost);
+        ChangeCurrencyAmount(geneticMaterialCurrency, recycleAction.rate);
     }
 }

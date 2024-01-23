@@ -385,10 +385,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 220289fec113b8140adea6b170954045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  geneticMaterial: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
-  DNA: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
-  genome: {fileID: 11400000, guid: 3e08ebd7228919f4b8c4171b04bb495c, type: 2}
-  GenerateUpgradeButton: {fileID: 2117378673}
+  geneticMaterialCurrency: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
+  DNACurrency: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
+  genomeCurrency: {fileID: 11400000, guid: 3e08ebd7228919f4b8c4171b04bb495c, type: 2}
+  RapidSequencerButton: {fileID: 2117378673}
+  generateAction: {fileID: 11400000, guid: 82b38a27b13fedf4e891138a7abd58aa, type: 2}
+  stabilizeAction: {fileID: 11400000, guid: e68794fc361384c4282ad03ab5b5b388, type: 2}
+  rapidSequencerAction: {fileID: 11400000, guid: 7c5aaeffed5840b4ca1bf7473437f3bb, type: 2}
 --- !u!1 &459541328
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,9 +579,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236e2c57fef1b4948be82d3ef46c2c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelThreshold: 1
   costType: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
-  action: {fileID: 11400000, guid: 85b5a3e3e79504a4fab8bf4470b260a5, type: 2}
+  _action: {fileID: 11400000, guid: 85b5a3e3e79504a4fab8bf4470b260a5, type: 2}
 --- !u!114 &471285466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,6 +1203,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a9da8ede1fc63b74a963ef91208068aa, type: 2}
     - target: {fileID: 6264407989829647979, guid: 60e30e69a6212c2409503231051c0def, type: 3}
+      propertyPath: _action
+      value: 
+      objectReference: {fileID: 11400000, guid: a9da8ede1fc63b74a963ef91208068aa, type: 2}
+    - target: {fileID: 6264407989829647979, guid: 60e30e69a6212c2409503231051c0def, type: 3}
       propertyPath: costType
       value: 
       objectReference: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
@@ -1314,14 +1320,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70f5c4cfd3b87c4fba5f39c57d1c6ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  geneticMaterial: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
-  DNA: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
-  genome: {fileID: 11400000, guid: 3e08ebd7228919f4b8c4171b04bb495c, type: 2}
+  geneticMaterialCurrency: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
+  DNACurrency: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
+  genomeCurrency: {fileID: 11400000, guid: 3e08ebd7228919f4b8c4171b04bb495c, type: 2}
+  researchLevelCurrency: {fileID: 11400000, guid: 56c31297e78bd8c4aafb5b8997876bd9, type: 2}
   GenerateButton: {fileID: 69786276}
   ResearchButton: {fileID: 1090161704}
   StabilizeButton: {fileID: 1554023427}
   RecycleButton: {fileID: 471285466}
-  researchLevel: 0
+  generateAction: {fileID: 11400000, guid: 82b38a27b13fedf4e891138a7abd58aa, type: 2}
+  researchAction: {fileID: 11400000, guid: a9da8ede1fc63b74a963ef91208068aa, type: 2}
+  stabilizeAction: {fileID: 11400000, guid: e68794fc361384c4282ad03ab5b5b388, type: 2}
+  recycleAction: {fileID: 11400000, guid: 85b5a3e3e79504a4fab8bf4470b260a5, type: 2}
 --- !u!1 &1195879509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1616,7 +1626,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BioForge Beasts
+  m_text: whatever
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2124,9 +2134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236e2c57fef1b4948be82d3ef46c2c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelThreshold: 1
   costType: {fileID: 11400000, guid: 519608c3b70192a48ac396ca49805957, type: 2}
-  action: {fileID: 11400000, guid: e68794fc361384c4282ad03ab5b5b388, type: 2}
+  _action: {fileID: 11400000, guid: e68794fc361384c4282ad03ab5b5b388, type: 2}
 --- !u!114 &1554023427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2728,9 +2737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236e2c57fef1b4948be82d3ef46c2c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelThreshold: 1
-  costType: {fileID: 0}
-  action: {fileID: 0}
+  costType: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
+  _action: {fileID: 11400000, guid: eff4a0174cf191e49bb4202321109b73, type: 2}
 --- !u!114 &1991485134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3146,9 +3154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 236e2c57fef1b4948be82d3ef46c2c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelThreshold: 0
-  costType: {fileID: 0}
-  action: {fileID: 0}
+  costType: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
+  _action: {fileID: 11400000, guid: 7c5aaeffed5840b4ca1bf7473437f3bb, type: 2}
 --- !u!1 &2141408275
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,6 +3388,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6264407989829647979, guid: 60e30e69a6212c2409503231051c0def, type: 3}
       propertyPath: action
+      value: 
+      objectReference: {fileID: 11400000, guid: 82b38a27b13fedf4e891138a7abd58aa, type: 2}
+    - target: {fileID: 6264407989829647979, guid: 60e30e69a6212c2409503231051c0def, type: 3}
+      propertyPath: _action
       value: 
       objectReference: {fileID: 11400000, guid: 82b38a27b13fedf4e891138a7abd58aa, type: 2}
     - target: {fileID: 6264407989829647979, guid: 60e30e69a6212c2409503231051c0def, type: 3}

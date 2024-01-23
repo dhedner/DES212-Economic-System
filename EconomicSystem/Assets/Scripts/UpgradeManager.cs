@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
-    public Currency geneticMaterial;
-    public Currency DNA;
-    public Currency genome;
+    public Currency geneticMaterialCurrency;
+    public Currency DNACurrency;
+    public Currency genomeCurrency;
 
-    public Button GenerateUpgradeButton;
+    public Button RapidSequencerButton;
+
+    public GameplayAction generateAction;
+    public GameplayAction stabilizeAction;
+    public GameplayAction rapidSequencerAction;
 
     private int[] _upgradeCost = { 10, 30, 70, 150, 280 };
     private int _upgradeLevel = 0;
@@ -17,9 +21,9 @@ public class UpgradeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (GenerateUpgradeButton != null)
+        if (RapidSequencerButton != null)
         {
-            GenerateUpgradeButton.onClick.AddListener(ApplyUpgrade);
+            RapidSequencerButton.onClick.AddListener(ApplyUpgrade);
         }
     }
 
@@ -31,14 +35,19 @@ public class UpgradeManager : MonoBehaviour
 
     void ApplyUpgrade()
     {
-        if (geneticMaterial.amount < _upgradeCost[_upgradeLevel])
+        if (geneticMaterialCurrency.amount < _upgradeCost[_upgradeLevel])
         {
             Debug.Log("Not enough Genetic Material to upgrade generation");
             return;
         }
 
-        geneticMaterial.amount -= _upgradeCost[_upgradeLevel];
+        geneticMaterialCurrency.amount -= _upgradeCost[_upgradeLevel];
         _upgradeLevel += 1;
+
+        rapidSequencerAction.cost = _upgradeCost[_upgradeLevel];
+        rapidSequencerAction.rate += 1;
+        generateAction.rate = rapidSequencerAction.rate;
+
         Debug.Log("Upgrade Purchased (LV: " + _upgradeLevel + ")");
         //geneticMaterial.rate += 1;
     }

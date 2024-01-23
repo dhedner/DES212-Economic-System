@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ea1e9e1dfd2004c8aeeab87cf53aee, type: 3}
   m_Name: Genetic Material
   m_EditorClassIdentifier: 
-  amount: 29
-  cost: 0
-  rate: 4
+  amount: 0
