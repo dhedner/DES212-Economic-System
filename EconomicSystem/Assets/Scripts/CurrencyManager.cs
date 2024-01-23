@@ -23,6 +23,8 @@ public class CurrencyManager : MonoBehaviour
     public GameplayAction stabilizeAction;
     public GameplayAction recycleAction;
 
+    private int[] _researchCost = { 100, 150, 200, 250, 300 };
+
     void Start()
     {
         if (GenerateButton != null)

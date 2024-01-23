@@ -23,7 +23,6 @@ public class ButtonInteractivityController : MonoBehaviour
         }
 
         button = GetComponent<Button>();
-        GameObject.Find("GameplayCanvas/Upgrades/Phase1UpgradeButton/UpgradeLevel").GetComponent<TMPro.TextMeshProUGUI>();
         if (button == null)
         {
             Debug.LogError("TextMeshPro-Button component not found on the GameObject.");
