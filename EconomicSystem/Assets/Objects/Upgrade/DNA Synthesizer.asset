@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd52846d4dde9c04888cc9e7c1318cfa, type: 3}
   m_Name: DNA Synthesizer
   m_EditorClassIdentifier: 
-  cost: 10
-  rate: 1
+  cost: 70
+  rate: 3
   phaseThreshold: 1

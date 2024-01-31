@@ -6,4 +6,9 @@ using UnityEngine;
 public class Currency : ScriptableObject
 {
     public int amount = 0;
+
+    public void ResetValues()
+    {
+        amount = 0;
+    }
 }

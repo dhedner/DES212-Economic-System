@@ -13,5 +13,3 @@ MonoBehaviour:
   m_Name: Genome
   m_EditorClassIdentifier: 
   amount: 0
-  cost: 0
-  rate: 1

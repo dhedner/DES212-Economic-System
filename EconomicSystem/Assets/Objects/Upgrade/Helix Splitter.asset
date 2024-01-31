@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Helix Splitter
   m_EditorClassIdentifier: 
   cost: 30
-  rate: 5
+  rate: 10
   phaseThreshold: 1

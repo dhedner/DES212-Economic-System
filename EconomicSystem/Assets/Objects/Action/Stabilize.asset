@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Stabilize
   m_EditorClassIdentifier: 
   cost: 0
-  rate: 1
+  rate: 3
   phaseThreshold: 1

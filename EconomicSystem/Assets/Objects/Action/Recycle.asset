@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Recycle
   m_EditorClassIdentifier: 
   cost: 5
-  rate: 5
+  rate: 10
   phaseThreshold: 1

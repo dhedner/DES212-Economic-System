@@ -4,96 +4,198 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class CurrencyStatus
+{
+    public int amount;
+    public double multiplier;
+}
+
 public class CurrencyManager : MonoBehaviour
 {
-    public static event Action<Currency> OnCurrencyChanged;
+    [SerializeField] public Dictionary<string, CurrencyStatus> currencies;
 
-    public Currency geneticMaterialCurrency;
-    public Currency DNACurrency;
-    public Currency genomeCurrency;
-    public Currency researchLevelCurrency;
-
-    public Button GenerateButton;
-    public Button ResearchButton;
-    public Button StabilizeButton;
-    public Button RecycleButton;
-
-    public GameplayAction generateAction;
-    public GameplayAction researchAction;
-    public GameplayAction stabilizeAction;
-    public GameplayAction recycleAction;
-
-    private int[] _researchCost = { 100, 150, 200, 250, 300 };
-
-    void Start()
+    public CurrencyManager()
     {
-        if (GenerateButton != null)
+        currencies = new Dictionary<string, CurrencyStatus>{
+            { "GeneticMaterial", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
+            { "DNA", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
+            { "Genome", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
+            { "CellClusters", new CurrencyStatus { amount = 9, multiplier = 1.0 } },
+            { "Research", new CurrencyStatus { amount = 5, multiplier = 1.0 } },
+        };
+    }
+
+    public void AddCurrency(string type, int amount)
+    {
+        if (!currencies.ContainsKey(type))
         {
-            GenerateButton.onClick.AddListener(IncreaseGeneticMaterial);
+            currencies[type] = new CurrencyStatus{ 
+                amount = 0,
+                multiplier = 1.0,
+            };
+        }
+        currencies[type].amount += (int)Math.Round(amount * currencies[type].multiplier);
+
+        BroadcastMessage("OnCurrencyChanged");
+    }
+
+    public bool CanAfford(List<ActionCost> costs)
+    {
+        foreach (var cost in costs)
+        {
+            if (!currencies.ContainsKey(cost.CurrencyType) || currencies[cost.CurrencyType].amount < cost.Amount)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void SpendCurrency(List<ActionCost> costs)
+    {
+        if (CanAfford(costs))
+        {
+            foreach (var cost in costs)
+            {
+                Debug.Log(cost.CurrencyType + "Multiplier = " + currencies[cost.CurrencyType].multiplier);
+                if (cost.Amount < 0)
+                {
+                    Debug.Log("Earning " + cost.Amount);
+                    currencies[cost.CurrencyType].amount -= (int)Math.Round(cost.Amount * currencies[cost.CurrencyType].multiplier);
+                }
+
+                if (cost.Amount > 0)
+                {
+                    Debug.Log("Spending " + cost.Amount);
+                    currencies[cost.CurrencyType].amount -= cost.Amount;
+                }
+                
+            }
         }
 
-        if (ResearchButton != null)
-        {
-            ResearchButton.onClick.AddListener(IncreaseResearch);
-        }
-
-        if (StabilizeButton != null)
-        {
-            StabilizeButton.onClick.AddListener(IncreaseDNA);
-        }
-
-        if (RecycleButton != null)
-        {
-            RecycleButton.onClick.AddListener(RecycleDNA);
-        }
+        BroadcastMessage("OnCurrencyChanged");
     }
 
-    void Update()
+    public void AddMultiplier(string type, double multiplier)
     {
-        GameObject.Find("GameplayCanvas/GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genetic Material: " + geneticMaterialCurrency.amount.ToString();
-        GameObject.Find("GameplayCanvas/DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + DNACurrency.amount.ToString();
-        GameObject.Find("GameplayCanvas/GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genomes: " + genomeCurrency.amount.ToString();
-        GameObject.Find("GameplayCanvas/ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + researchLevelCurrency.amount.ToString();
+        currencies[type].multiplier += multiplier;
+
+        BroadcastMessage("OnCurrencyChanged");
     }
 
-    public void ChangeCurrencyAmount(Currency currency, int amount)
+    public void RemoveMultiplier(string type, double multiplier)
     {
-        if (currency != null)
-        {
-            currency.amount += amount;
-            OnCurrencyChanged?.Invoke(currency);
-        }
-        else
-        {
-            Debug.LogError("Currency object is null.");
-        }
+        currencies[type].multiplier -= multiplier;
+
+        BroadcastMessage("OnCurrencyChanged");
     }
 
-    public void ChangeResearchLevel(int amount)
+    public void SetMultiplier(string type, double multiplier)
     {
-        geneticMaterialCurrency.amount -= researchAction.cost;
-        researchLevelCurrency.amount += amount;
-        OnCurrencyChanged?.Invoke(researchLevelCurrency);
+        Debug.Log("Setting " + type + " multiplier to " + multiplier);
+        currencies[type].multiplier = multiplier;
+
+        BroadcastMessage("OnCurrencyChanged");
+    }
+    public int GetCurrencyAmount(string type)
+    {
+        return currencies[type].amount;
     }
 
-    public void IncreaseGeneticMaterial()
-    {
-        ChangeCurrencyAmount(geneticMaterialCurrency, generateAction.rate);
-    }
 
-    public void IncreaseResearch()
-    {
-        ChangeResearchLevel(1);
-    }
-
-    public void IncreaseDNA()
-    {
-        ChangeCurrencyAmount(DNACurrency, stabilizeAction.rate);
-    }
-
-    public void RecycleDNA()
-    {
-        ChangeCurrencyAmount(DNACurrency, -recycleAction.cost);
-        ChangeCurrencyAmount(geneticMaterialCurrency, recycleAction.rate);
-    }
 }
+
+//public class CurrencyManager : MonoBehaviour
+//{
+//    public static event Action<Currency> OnCurrencyChanged;
+
+//    public Currency geneticMaterialCurrency;
+//    public Currency DNACurrency;
+//    public Currency genomeCurrency;
+//    public Currency researchLevelCurrency;
+
+//    public Button GenerateButton;
+//    public Button ResearchButton;
+//    public Button StabilizeButton;
+//    public Button RecycleButton;
+
+//    public GameplayAction generateAction;
+//    public GameplayAction researchAction;
+//    public GameplayAction stabilizeAction;
+//    public GameplayAction recycleAction;
+
+//    private int[] _researchCost = { 100, 150, 200, 250, 300 };
+
+//    void Start()
+//    {
+//        if (GenerateButton != null)
+//        {
+//            GenerateButton.onClick.AddListener(IncreaseGeneticMaterial);
+//        }
+
+//        if (ResearchButton != null)
+//        {
+//            ResearchButton.onClick.AddListener(IncreaseResearch);
+//        }
+
+//        if (StabilizeButton != null)
+//        {
+//            StabilizeButton.onClick.AddListener(IncreaseDNA);
+//        }
+
+//        if (RecycleButton != null)
+//        {
+//            RecycleButton.onClick.AddListener(RecycleDNA);
+//        }
+//    }
+
+//    void Update()
+//    {
+//        GameObject.Find("GameplayCanvas/GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genetic Material: " + geneticMaterialCurrency.amount.ToString();
+//        GameObject.Find("GameplayCanvas/DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + DNACurrency.amount.ToString();
+//        GameObject.Find("GameplayCanvas/GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genomes: " + genomeCurrency.amount.ToString();
+//        GameObject.Find("GameplayCanvas/ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + researchLevelCurrency.amount.ToString();
+//    }
+
+//    public void ChangeCurrencyAmount(Currency currency, int amount)
+//    {
+//        if (currency != null)
+//        {
+//            currency.amount += amount;
+//            OnCurrencyChanged?.Invoke(currency);
+//        }
+//        else
+//        {
+//            Debug.LogError("Currency object is null.");
+//        }
+//    }
+
+//    public void ChangeResearchLevel(int amount)
+//    {
+//        geneticMaterialCurrency.amount -= researchAction.cost;
+//        researchLevelCurrency.amount += amount;
+//        OnCurrencyChanged?.Invoke(researchLevelCurrency);
+//    }
+
+//    public void IncreaseGeneticMaterial()
+//    {
+//        ChangeCurrencyAmount(geneticMaterialCurrency, generateAction.rate);
+//    }
+
+//    public void IncreaseResearch()
+//    {
+//        ChangeResearchLevel(1);
+//    }
+
+//    public void IncreaseDNA()
+//    {
+//        ChangeCurrencyAmount(DNACurrency, stabilizeAction.rate);
+//    }
+
+//    public void RecycleDNA()
+//    {
+//        ChangeCurrencyAmount(DNACurrency, -recycleAction.cost);
+//        ChangeCurrencyAmount(geneticMaterialCurrency, recycleAction.rate);
+//    }
+//}
