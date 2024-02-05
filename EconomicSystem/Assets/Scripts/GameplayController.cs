@@ -7,6 +7,7 @@ public class GameplayController : MonoBehaviour
 {
     public Phase[] phases;
     private CurrencyManager currencyManager;
+    string path = "CurrencyDisplay/";
 
     // Start is called before the first frame update
     void Start()
@@ -18,11 +19,14 @@ public class GameplayController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject.Find("GameplayCanvas/GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genetic Material: " + currencyManager.GetCurrencyAmount("GeneticMaterial");
-        GameObject.Find("GameplayCanvas/DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + currencyManager.GetCurrencyAmount("DNA");
-        GameObject.Find("GameplayCanvas/GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genomes: " + currencyManager.GetCurrencyAmount("Genome");
-        GameObject.Find("GameplayCanvas/CellClusterCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Cell Clusters: " + currencyManager.GetCurrencyAmount("CellClusters");
-        GameObject.Find("GameplayCanvas/ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + currencyManager.GetCurrencyAmount("Research");
+        GameObject.Find(path + "GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "GM: " + currencyManager.GetCurrencyAmount("GeneticMaterial");
+        GameObject.Find(path + "DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + currencyManager.GetCurrencyAmount("DNA");
+        GameObject.Find(path + "GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genome: " + currencyManager.GetCurrencyAmount("Genome");
+        GameObject.Find(path + "RedGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "R: " + currencyManager.GetCurrencyAmount("RedGenome");
+        GameObject.Find(path + "PurpleGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "P: " + currencyManager.GetCurrencyAmount("PurpleGenome");
+        GameObject.Find(path + "GreenGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "G: " + currencyManager.GetCurrencyAmount("GreenGenome");
+        GameObject.Find(path + "CellClusterCount").GetComponent<TMPro.TextMeshProUGUI>().text = "CC: " + currencyManager.GetCurrencyAmount("CellClusters");
+        GameObject.Find(path + "ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + currencyManager.GetCurrencyAmount("Research");
 
         //GameObject.Find("GameplayCanvas/Phase1/Upgrades/DNASynthesizer/UpgradeLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Level: " + currencyManager.GetLevel("DNA");
     }

@@ -16,6 +16,11 @@ public struct ActionCost
         CurrencyType = currencyType;
         Amount = amount;
     }
+
+    public override string ToString()
+    {
+        return $"{CurrencyType}: {Amount}";
+    }
 }
 
 public class ActionButton : MonoBehaviour
@@ -23,8 +28,8 @@ public class ActionButton : MonoBehaviour
     public TextMeshProUGUI Label;
     public TextMeshProUGUI Description;
     public Button UIButton;
-    public Action GameplayAction;
     public List<ActionCost> ActionButtonCosts;
+    private HoverDialogue hoverDialogue;
 
     // Get currency manager from parents
     private CurrencyManager currencyManager;
@@ -35,13 +40,7 @@ public class ActionButton : MonoBehaviour
         UIButton.onClick.AddListener(OnButtonClick);
 
         currencyManager = GetComponentInParent<CurrencyManager>();
-    }
-
-    public void Initialize(string label, Action action, List<ActionCost> cost)
-    {
-        Label.text = label;
-        GameplayAction = action;
-        ActionButtonCosts = cost;
+        hoverDialogue = GetComponent<HoverDialogue>();
     }
 
     void Update()
@@ -58,15 +57,19 @@ public class ActionButton : MonoBehaviour
 
     private void OnButtonClick()
     {
-        if (GetComponent<LevelBasedCostChanger>() != null)
+        if (!currencyManager.CanAfford(ActionButtonCosts))
         {
             return;
         }
-        if (currencyManager.CanAfford(ActionButtonCosts))
+        
+        currencyManager.SpendCurrency(ActionButtonCosts);
+
+        if (TryGetComponent(out CostChanger costChanger))
         {
-            GameplayAction?.Invoke();
-            currencyManager.SpendCurrency(ActionButtonCosts);
+            costChanger.TriggerCostChange();
         }
+
+        hoverDialogue.RefreshText();
     }
 
     public void Show()
@@ -79,7 +82,7 @@ public class ActionButton : MonoBehaviour
         SetButtonVisible(false);
     }
 
-    private void SetButtonOpacity(float alpha)
+    public void SetButtonOpacity(float alpha)
     {
         Image image = GetComponent<Image>();
         if (image != null)
@@ -101,7 +104,7 @@ public class ActionButton : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);
-            if (child != null)
+            if (child != null && child.tag != "InactiveByDefault")
             {
                 child.gameObject.SetActive(visible);
             }

@@ -19,16 +19,18 @@ public class ActionCostSet
     public ActionMultiplier[] multipliers;
 }
 
-public class LevelBasedCostChanger : MonoBehaviour
+public class LevelBasedCostChanger : CostChanger
 {
     private int currentLevel = 0;
     public List<ActionCostSet> costs;
+
     void Start()
     {
         var actionbutton = GetComponent<ActionButton>();
         actionbutton.ActionButtonCosts = costs[currentLevel].Costs.ToList();
     }
-    public void Execute()
+
+    public override void TriggerCostChange()
     {
         var currencyManager = GetComponentInParent<CurrencyManager>();
 

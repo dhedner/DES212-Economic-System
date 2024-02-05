@@ -18,11 +18,15 @@ public class CurrencyManager : MonoBehaviour
     public CurrencyManager()
     {
         currencies = new Dictionary<string, CurrencyStatus>{
-            { "GeneticMaterial", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
-            { "DNA", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
-            { "Genome", new CurrencyStatus { amount = 100, multiplier = 1.0 } },
-            { "CellClusters", new CurrencyStatus { amount = 9, multiplier = 1.0 } },
-            { "Research", new CurrencyStatus { amount = 5, multiplier = 1.0 } },
+            { "GeneticMaterial", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "DNA", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "Genome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "RedGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "GreenGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "PurpleGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "CellClusters", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "Research", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { "DummyCurrency", new CurrencyStatus { amount = 0, multiplier = 1.0 } }
         };
     }
 
@@ -42,6 +46,11 @@ public class CurrencyManager : MonoBehaviour
 
     public bool CanAfford(List<ActionCost> costs)
     {
+        if (costs == null)
+        {
+            return true;
+        }
+
         foreach (var cost in costs)
         {
             if (!currencies.ContainsKey(cost.CurrencyType) || currencies[cost.CurrencyType].amount < cost.Amount)
@@ -58,23 +67,12 @@ public class CurrencyManager : MonoBehaviour
         {
             foreach (var cost in costs)
             {
-                Debug.Log(cost.CurrencyType + "Multiplier = " + currencies[cost.CurrencyType].multiplier);
-                if (cost.Amount < 0)
-                {
-                    Debug.Log("Earning " + cost.Amount);
-                    currencies[cost.CurrencyType].amount -= (int)Math.Round(cost.Amount * currencies[cost.CurrencyType].multiplier);
-                }
-
-                if (cost.Amount > 0)
-                {
-                    Debug.Log("Spending " + cost.Amount);
-                    currencies[cost.CurrencyType].amount -= cost.Amount;
-                }
-                
+                Debug.Log("Costs: " + cost);
+                currencies[cost.CurrencyType].amount -= cost.Amount;
             }
+            
+            BroadcastMessage("OnCurrencyChanged");
         }
-
-        BroadcastMessage("OnCurrencyChanged");
     }
 
     public void AddMultiplier(string type, double multiplier)
@@ -93,7 +91,6 @@ public class CurrencyManager : MonoBehaviour
 
     public void SetMultiplier(string type, double multiplier)
     {
-        Debug.Log("Setting " + type + " multiplier to " + multiplier);
         currencies[type].multiplier = multiplier;
 
         BroadcastMessage("OnCurrencyChanged");
