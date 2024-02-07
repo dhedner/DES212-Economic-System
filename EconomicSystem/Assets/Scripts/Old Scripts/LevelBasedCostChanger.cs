@@ -44,12 +44,7 @@ public class LevelBasedCostChanger : CostChanger
         if (currencyManager.CanAfford(cost))
         {
             currencyManager.SpendCurrency(cost);
-            foreach (var multiplier in actionCostSet.multipliers)
-            {
-                currencyManager.SetMultiplier(multiplier.CurrencyType, multiplier.Multiplier);
-            }
-
-
+            
             var actionbutton = GetComponent<ActionButton>();
             currentLevel++;
             if (currentLevel < costs.Count)

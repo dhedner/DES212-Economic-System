@@ -50,7 +50,7 @@ public class ConversionChanger : CostChanger
         {
             upgradeButton.ActionButtonCosts = new List<ActionCost>
             {
-                new ActionCost("GeneticMaterial", int.MaxValue)
+                new ActionCost(CurrencyType.GeneticMaterial, int.MaxValue)
             };
             upgradeButton.SetButtonOpacity(0.3f);
 

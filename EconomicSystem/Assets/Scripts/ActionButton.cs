@@ -8,39 +8,50 @@ using TMPro;
 [Serializable]
 public struct ActionCost
 {
-    [SerializeField] public string CurrencyType;
+    [SerializeField] public CurrencyType currencyType;
     [SerializeField] public int Amount;
 
-    public ActionCost(string currencyType, int amount)
+    public ActionCost(CurrencyType currency, int amount)
     {
-        CurrencyType = currencyType;
+        currencyType = currency;
         Amount = amount;
     }
 
     public override string ToString()
     {
-        return $"{CurrencyType}: {Amount}";
+        return $"{currencyType}: {Amount}";
     }
 }
 
 public class ActionButton : MonoBehaviour
 {
     public TextMeshProUGUI Label;
-    public TextMeshProUGUI Description;
+    public GameplayButton AssignedGameplayButton;
     public Button UIButton;
     public List<ActionCost> ActionButtonCosts;
+
     private HoverDialogue hoverDialogue;
-
-    // Get currency manager from parents
     private CurrencyManager currencyManager;
+    private ActionTracker actionTracker;
 
-    void Awake()
+    public bool IsClickable
+    {
+        get
+        {
+            return UIButton.interactable && UIButton.IsActive() && GetComponentInParent<Phase>().isActive;
+        }
+    }
+
+    void Start()
     {
         // Initialize components
         UIButton.onClick.AddListener(OnButtonClick);
 
-        currencyManager = GetComponentInParent<CurrencyManager>();
         hoverDialogue = GetComponent<HoverDialogue>();
+        currencyManager = GetComponentInParent<CurrencyManager>();
+        actionTracker = GetComponentInParent<ActionTracker>();
+
+        UpdateButtonState();
     }
 
     void Update()
@@ -69,7 +80,11 @@ public class ActionButton : MonoBehaviour
             costChanger.TriggerCostChange();
         }
 
+        actionTracker.NotifyAction(AssignedGameplayButton);
+
         hoverDialogue.RefreshText();
+
+        //BroadcastMessage("OnTurnTaken");
     }
 
     public void Show()
@@ -91,6 +106,8 @@ public class ActionButton : MonoBehaviour
             color.a = alpha;
             image.color = color;
         }
+
+        Label.color = new Color(Label.color.r, Label.color.g, Label.color.b, alpha);
     }
 
     private void SetButtonVisible(bool visible)

@@ -9,6 +9,8 @@ public class Phase : MonoBehaviour
     public string Name;
     public List<ActionButton> Buttons;
     public int LevelCost;
+
+    private GameplayController gameplayController;
     private CurrencyManager currencyManager;
 
     public bool isActive = false;
@@ -16,6 +18,8 @@ public class Phase : MonoBehaviour
     public void Start()
     {
         currencyManager = GetComponentInParent<CurrencyManager>();
+        gameplayController = GetComponentInParent<GameplayController>();
+
         if (!isActive)
         {
             Deactivate();
@@ -26,12 +30,13 @@ public class Phase : MonoBehaviour
     {
         bool canEnablePhase = currencyManager.CanAfford(new List<ActionCost>
         {
-            new ActionCost("Research", LevelCost),
+            new ActionCost(CurrencyType.Research, LevelCost),
         });
 
-        if (canEnablePhase)
+        if (!isActive && canEnablePhase)
         {
             Activate();
+            gameplayController.PhaseHasChanged();
         }
     }
 
@@ -39,24 +44,24 @@ public class Phase : MonoBehaviour
     {
         ShowButtons();
 
-        //SendMessage("Show");
+        foreach (var image in gameObject.GetComponentsInChildren<Image>())
+        {
+            image.enabled = true;
+        }
 
-        // Show the parent game object
-        //foreach (var spriteRenderer in gameObject.GetComponentsInChildren<Renderer>())
-        //{
-        //    spriteRenderer.enabled = true;
-        //}
+        isActive = true;
     }
 
     public void Deactivate()
     {
         HideButtons();
 
-        //SendMessage("Hide");
-        //foreach (var spriteRenderer in gameObject.GetComponentsInChildren<Renderer>())
-        //{
-        //    spriteRenderer.enabled = false;
-        //}
+        foreach (var image in gameObject.GetComponentsInChildren<Image>())
+        {
+            image.enabled = false;
+        }
+
+        isActive = false;
     }
 
     private void ShowButtons()

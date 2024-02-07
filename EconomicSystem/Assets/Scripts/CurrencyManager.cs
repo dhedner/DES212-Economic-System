@@ -4,6 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CurrencyType
+{
+    GeneticMaterial,
+    DNA,
+    Genome,
+    RedGenome,
+    GreenGenome,
+    PurpleGenome,
+    CellClusters,
+    Research,
+    DummyCurrency
+}
+
 [Serializable]
 public class CurrencyStatus
 {
@@ -13,24 +26,24 @@ public class CurrencyStatus
 
 public class CurrencyManager : MonoBehaviour
 {
-    [SerializeField] public Dictionary<string, CurrencyStatus> currencies;
+    public Dictionary<CurrencyType, CurrencyStatus> currencies;
 
     public CurrencyManager()
     {
-        currencies = new Dictionary<string, CurrencyStatus>{
-            { "GeneticMaterial", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "DNA", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "Genome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "RedGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "GreenGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "PurpleGenome", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "CellClusters", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "Research", new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { "DummyCurrency", new CurrencyStatus { amount = 0, multiplier = 1.0 } }
+        currencies = new Dictionary<CurrencyType, CurrencyStatus>{
+            { CurrencyType.GeneticMaterial, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.DNA, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.Genome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.RedGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.GreenGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.PurpleGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.CellClusters, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.Research, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.DummyCurrency, new CurrencyStatus { amount = 0, multiplier = 1.0 } }
         };
     }
 
-    public void AddCurrency(string type, int amount)
+    public void AddCurrency(CurrencyType type, int amount)
     {
         if (!currencies.ContainsKey(type))
         {
@@ -53,7 +66,7 @@ public class CurrencyManager : MonoBehaviour
 
         foreach (var cost in costs)
         {
-            if (!currencies.ContainsKey(cost.CurrencyType) || currencies[cost.CurrencyType].amount < cost.Amount)
+            if (!currencies.ContainsKey(cost.currencyType) || currencies[cost.currencyType].amount < cost.Amount)
             {
                 return false;
             }
@@ -68,34 +81,34 @@ public class CurrencyManager : MonoBehaviour
             foreach (var cost in costs)
             {
                 Debug.Log("Costs: " + cost);
-                currencies[cost.CurrencyType].amount -= cost.Amount;
+                currencies[cost.currencyType].amount -= cost.Amount;
             }
             
             BroadcastMessage("OnCurrencyChanged");
         }
     }
 
-    public void AddMultiplier(string type, double multiplier)
+    public void AddMultiplier(CurrencyType type, double multiplier)
     {
         currencies[type].multiplier += multiplier;
 
         BroadcastMessage("OnCurrencyChanged");
     }
 
-    public void RemoveMultiplier(string type, double multiplier)
+    public void RemoveMultiplier(CurrencyType type, double multiplier)
     {
         currencies[type].multiplier -= multiplier;
 
         BroadcastMessage("OnCurrencyChanged");
     }
 
-    public void SetMultiplier(string type, double multiplier)
+    public void SetMultiplier(CurrencyType type, double multiplier)
     {
         currencies[type].multiplier = multiplier;
 
         BroadcastMessage("OnCurrencyChanged");
     }
-    public int GetCurrencyAmount(string type)
+    public int GetCurrencyAmount(CurrencyType type)
     {
         return currencies[type].amount;
     }

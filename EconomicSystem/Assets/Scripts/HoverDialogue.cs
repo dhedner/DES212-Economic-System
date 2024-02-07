@@ -31,13 +31,17 @@ public class HoverDialogue : MonoBehaviour
         string costsString = "";
         foreach (var cost in actionButton.ActionButtonCosts)
         {
-            if (cost.Amount < 0)
+            if (cost.Amount >= int.MaxValue)
             {
-                costsString += $"Gain + {-cost.Amount} {cost.CurrencyType}\n";
+                costsString += $"Max Reached\n";
+            }
+            else if (cost.Amount < 0)
+            {
+                costsString += $"Gain + {-cost.Amount} {cost.currencyType}\n";
             }
             else
             {
-                costsString += $"Cost - {cost.Amount} {cost.CurrencyType}\n";
+                costsString += $"Cost - {cost.Amount} {cost.currencyType}\n";
             }
         }
 
