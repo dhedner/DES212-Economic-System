@@ -13,7 +13,7 @@ public class DecisionMaker : MonoBehaviour
         tracker = GetComponentInParent<ActionTracker>();
     }
 
-    public GameplayButton MakeDecision(GameplayButton state)
+    public GameplayButton MakeDecision(GameplayState state)
     {
         var random = new System.Random();
 

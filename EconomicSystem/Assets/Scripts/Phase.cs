@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -9,6 +11,7 @@ public class Phase : MonoBehaviour
     public string Name;
     public List<ActionButton> Buttons;
     public int LevelCost;
+    public Predicate<Phase> EnableCondition = (phase) => phase.currencyManager.CanAfford(new List<ActionCost> { new ActionCost(CurrencyType.Research, phase.LevelCost) });
 
     private GameplayController gameplayController;
     private CurrencyManager currencyManager;
@@ -28,10 +31,12 @@ public class Phase : MonoBehaviour
 
     public void OnCurrencyChanged()
     {
-        bool canEnablePhase = currencyManager.CanAfford(new List<ActionCost>
-        {
-            new ActionCost(CurrencyType.Research, LevelCost),
-        });
+        //bool canEnablePhase = currencyManager.CanAfford(new List<ActionCost>
+        //{
+        //    new ActionCost(CurrencyType.Research, LevelCost),
+        //});
+
+        bool canEnablePhase = EnableCondition(this);
 
         if (!isActive && canEnablePhase)
         {
@@ -49,6 +54,11 @@ public class Phase : MonoBehaviour
             image.enabled = true;
         }
 
+        foreach (var text in gameObject.GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            text.enabled = true;
+        }
+
         isActive = true;
     }
 
@@ -59,6 +69,11 @@ public class Phase : MonoBehaviour
         foreach (var image in gameObject.GetComponentsInChildren<Image>())
         {
             image.enabled = false;
+        }
+
+        foreach (var text in gameObject.GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            text.enabled = false;
         }
 
         isActive = false;

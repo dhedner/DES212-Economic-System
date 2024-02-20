@@ -22,14 +22,34 @@ public enum GameplayButton
     RecessiveAlignment = 0x0800,
     Construct = 0x1000,
     Release = 0x2000,
+    SeeStats = 0x4000,
+    Restart = 0x8000,
 }
 
 public class GameplayController : MonoBehaviour
 {
+    public int CurrentPhaseIndex
+    {
+        get; private set;
+    } = 1;
+
     public Phase[] phases;
     private Phase currentPhase;
     private CurrencyManager currencyManager;
-    string path = "CurrencyDisplay/";
+    string currencyDisplayPath = "CurrencyDisplay/";
+    //string winScreenPath = "WinScreen/";
+
+    public GameplayState GameplayState
+    {
+        get
+        {
+            return new GameplayState
+            {
+                EnabledButtons = AvailableActions,
+                Level = CurrentPhaseIndex,
+            };
+        }
+    }
 
     public GameplayButton AvailableActions
     {
@@ -55,7 +75,7 @@ public class GameplayController : MonoBehaviour
         currencyManager = GetComponentInParent<CurrencyManager>();
         phases[0].Activate();
         currentPhase = phases[0];
-        UpdateCurrencyCounts();
+        OnCurrencyChanged();
     }
 
     public void OnCurrencyChanged()
@@ -66,13 +86,35 @@ public class GameplayController : MonoBehaviour
 
     public void Win()
     {
-        transform.GetChild(1).GetComponent<Canvas>().enabled = true;
+        // Activate the win phase
         foreach (var phase in phases)
         {
             phase.Deactivate();
         }
 
+        phases[phases.Length - 1].Activate();
+
+        // Enable canvas
+        //transform.GetChild(1).GetComponent<Canvas>().enabled = true;
+        // Set canvas to sorting order to the top
+        //GameObject.Find("WinScreen").GetComponent<Canvas>().enabled = true;
+        //transform.GetChild(6).SetAsLastSibling();
+
+
         BroadcastMessage("OnGameOver");
+    }
+
+    public void RestartGame()
+    {
+        // Deactivate all phases and activate the first one, then reset the currency
+        foreach (var phase in phases)
+        {
+            phase.Deactivate();
+        }
+        phases[0].Activate();
+        currencyManager.ResetAllCurrency();
+
+        BroadcastMessage("OnRestartGame");
     }
 
     public void TriggerAction(GameplayButton action)
@@ -92,17 +134,18 @@ public class GameplayController : MonoBehaviour
     public void PhaseHasChanged()
     {
         BroadcastMessage("OnNextPhase");
+        CurrentPhaseIndex++;
     }
 
     private void UpdateCurrencyCounts()
     {
-        GameObject.Find(path + "GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "GM: " + currencyManager.GetCurrencyAmount(CurrencyType.GeneticMaterial);
-        GameObject.Find(path + "DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "DNA: " + currencyManager.GetCurrencyAmount(CurrencyType.DNA);
-        GameObject.Find(path + "GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "Genome: " + currencyManager.GetCurrencyAmount(CurrencyType.Genome);
-        GameObject.Find(path + "RedGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "R: " + currencyManager.GetCurrencyAmount(CurrencyType.RedGenome);
-        GameObject.Find(path + "PurpleGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "P: " + currencyManager.GetCurrencyAmount(CurrencyType.GreenGenome);
-        GameObject.Find(path + "GreenGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "G: " + currencyManager.GetCurrencyAmount(CurrencyType.PurpleGenome);
-        GameObject.Find(path + "CellClusterCount").GetComponent<TMPro.TextMeshProUGUI>().text = "CC: " + currencyManager.GetCurrencyAmount(CurrencyType.CellClusters);
-        GameObject.Find(path + "ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + currencyManager.GetCurrencyAmount(CurrencyType.Research);
+        GameObject.Find(currencyDisplayPath + "GMCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.GeneticMaterial);
+        GameObject.Find(currencyDisplayPath + "DNACount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.DNA);
+        GameObject.Find(currencyDisplayPath + "GenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.Genome);
+        GameObject.Find(currencyDisplayPath + "RedGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.RedGenome);
+        GameObject.Find(currencyDisplayPath + "PurpleGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.PurpleGenome);
+        GameObject.Find(currencyDisplayPath + "GreenGenomeCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.GreenGenome);
+        GameObject.Find(currencyDisplayPath + "CellClusterCount").GetComponent<TMPro.TextMeshProUGUI>().text = "" + currencyManager.GetCurrencyAmount(CurrencyType.CellClusters);
+        GameObject.Find(currencyDisplayPath + "ResearchLevel").GetComponent<TMPro.TextMeshProUGUI>().text = "Research: " + currencyManager.GetCurrencyAmount(CurrencyType.Research);
     }
 }

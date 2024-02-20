@@ -13,17 +13,23 @@ public class HoverDialogue : MonoBehaviour
     //public bool isUpgrade;
 
     private ActionButton actionButton;
-    private ConversionChanger conversionChanger;
-    //private CurrencyManager currencyManager;
+    private Dictionary<CurrencyType, string> currencyNameStrings = new Dictionary<CurrencyType, string>()
+    {
+        {CurrencyType.GeneticMaterial, "Genetic Material"},
+        {CurrencyType.DNA, "DNA"},
+        {CurrencyType.Genome, "Genome"},
+        {CurrencyType.RedGenome, "Red Genome"},
+        {CurrencyType.GreenGenome, "Green Genome"},
+        {CurrencyType.PurpleGenome, "Purple Genome"},
+        {CurrencyType.CellClusters, "Cell Clusters"},
+        {CurrencyType.Research, "Research"},
+        {CurrencyType.DummyCurrency, "Dummy Currency"}
+    };
+
     void Start()
     {
         panel.SetActive(false);
         actionButton = GetComponent<ActionButton>();
-        //if (isUpgrade)
-        //{
-        //    conversionChanger = GetComponent<ConversionChanger>();
-        //}
-        //currencyManager = GetComponentInParent<CurrencyManager>();
     }
 
     public void RefreshText()
@@ -37,22 +43,15 @@ public class HoverDialogue : MonoBehaviour
             }
             else if (cost.Amount < 0)
             {
-                costsString += $"Gain + {-cost.Amount} {cost.currencyType}\n";
+                costsString += $"Gain + {-cost.Amount} {currencyNameStrings[cost.currencyType]}\n";
             }
             else
             {
-                costsString += $"Cost - {cost.Amount} {cost.currencyType}\n";
+                costsString += $"Cost - {cost.Amount} {currencyNameStrings[cost.currencyType]}\n";
             }
         }
 
-        //if (isUpgrade)
-        //{
-        //    conversionChanger.costs[conversionChanger.currentLevel].UpgradeCost[0] = cost;
-        //    costsString += $"Upgrade Cost - {cost.Amount} {cost.CurrencyType}\n";
-        //}
-
         infoText.text = $"{dialogText}\n\n{costsString}";
-        //StartCoroutine(RefreshBox());
         RefreshBox();
     }
 

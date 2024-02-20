@@ -7,25 +7,26 @@ using UnityEngine;
 public class AlignUpgrade : MonoBehaviour
 { 
     public AlignMutagen alignMutagen;
+    public ActionButton actionButton;
     public SelectionType selectionType;
 
-    private bool isActive;
+    private CurrencyManager currencyManager;
 
-    public void Update()
+    public void Start()
     {
-        // Set button to be interactable
-        GetComponent<ActionButton>().UIButton.interactable = isActive;
-        GetComponent<ActionButton>().SetButtonOpacity(isActive ? 1.0f : 0.3f);
+        actionButton = GetComponent<ActionButton>();
+        currencyManager = GetComponentInParent<CurrencyManager>();
+        actionButton.EnableCondition = IsEnabledMutagenButton;
+    }
 
-        if (alignMutagen.selectionType != selectionType)
-        {
-            isActive = true;
-        }
+    private bool IsEnabledMutagenButton(ActionButton button)
+    {
+        // If the button can be afforded and it is not active, activate it
+        return alignMutagen.selectionType != selectionType && currencyManager.CanAfford(button.ActionButtonCosts);
     }
 
     public void AssignSelectionType()
     {
         alignMutagen.selectionType = selectionType;
-        isActive = false;
     }
 }

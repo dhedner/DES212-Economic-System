@@ -41,7 +41,7 @@ public class Autoplayer : MonoBehaviour
         if (now - lastActionTime > TimeSpan.FromMilliseconds(actionDelay))
         {
             lastActionTime = now;
-            var state = gameplayController.AvailableActions;
+            var state = gameplayController.GameplayState;
             var action = decisionMaker.MakeDecision(state);
             gameplayController.TriggerAction(action);
         }

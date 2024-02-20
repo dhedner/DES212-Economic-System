@@ -28,11 +28,56 @@ public class ActionButton : MonoBehaviour
     public TextMeshProUGUI Label;
     public GameplayButton AssignedGameplayButton;
     public Button UIButton;
-    public List<ActionCost> ActionButtonCosts;
+
+    public List<ActionCost> ActionButtonCosts
+    {
+        get
+        {
+            return _actionButtonCosts;
+        }
+        set
+        {
+            _actionButtonCosts = value;
+            UpdateButtonState();
+        }
+    }
+    
+    [SerializeField]
+    private List<ActionCost> _actionButtonCosts;
+    
+    public Predicate<ActionButton> EnableCondition
+    {
+        get
+        { 
+            return _enableCondition;
+        }
+        set 
+        {
+            _enableCondition = value;
+            UpdateButtonState();
+        }
+    }
+    private Predicate<ActionButton> _enableCondition;
 
     private HoverDialogue hoverDialogue;
-    private CurrencyManager currencyManager;
     private ActionTracker actionTracker;
+    private CurrencyManager currencyManager
+    {
+        get 
+        {
+            if (_currencyManager == null)
+            {
+                _currencyManager = GetComponentInParent<CurrencyManager>();
+            }
+
+            return _currencyManager;
+        }
+        set
+        {
+            _currencyManager = value;
+        }
+    }
+    private CurrencyManager _currencyManager;
 
     public bool IsClickable
     {
@@ -42,28 +87,43 @@ public class ActionButton : MonoBehaviour
         }
     }
 
+    ActionButton()
+    {
+        _enableCondition = DefaultEnableCondition;
+
+        if (_actionButtonCosts == null)
+        {
+            _actionButtonCosts = new List<ActionCost>();
+        }
+    }
+
     void Start()
     {
         // Initialize components
         UIButton.onClick.AddListener(OnButtonClick);
 
         hoverDialogue = GetComponent<HoverDialogue>();
-        currencyManager = GetComponentInParent<CurrencyManager>();
         actionTracker = GetComponentInParent<ActionTracker>();
 
         UpdateButtonState();
     }
 
-    void Update()
+    public void OnCurrencyChanged()
     {
         UpdateButtonState();
     }
 
     private void UpdateButtonState()
     {
-        bool canAfford = currencyManager.CanAfford(ActionButtonCosts);
-        UIButton.interactable = canAfford;
-        SetButtonOpacity(canAfford ? 1.0f : 0.3f);
+        bool isEnabled = EnableCondition(this);
+
+        UIButton.interactable = isEnabled;
+        SetButtonOpacity(isEnabled ? 1.0f : 0.3f);
+    }
+
+    private bool DefaultEnableCondition(ActionButton button)
+    {
+        return button.currencyManager.CanAfford(button.ActionButtonCosts);
     }
 
     private void OnButtonClick()
@@ -72,15 +132,15 @@ public class ActionButton : MonoBehaviour
         {
             return;
         }
-        
+
+        actionTracker.NotifyAction(AssignedGameplayButton);
+
         currencyManager.SpendCurrency(ActionButtonCosts);
 
         if (TryGetComponent(out CostChanger costChanger))
         {
             costChanger.TriggerCostChange();
         }
-
-        actionTracker.NotifyAction(AssignedGameplayButton);
 
         hoverDialogue.RefreshText();
 
