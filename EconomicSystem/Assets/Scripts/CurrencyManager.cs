@@ -26,13 +26,17 @@ public class CurrencyStatus
 
 public class CurrencyManager : MonoBehaviour
 {
+    private int _redGenomesUsed;
+    private int _greenGenomesUsed;
+    private int _purpleGenomesUsed;
+
     public Dictionary<CurrencyType, CurrencyStatus> currencies;
 
     public CurrencyManager()
     {
         currencies = new Dictionary<CurrencyType, CurrencyStatus>{
             { CurrencyType.GeneticMaterial, new CurrencyStatus { amount = 500, multiplier = 1.0 } },
-            { CurrencyType.DNA, new CurrencyStatus { amount = 500, multiplier = 1.0 } },
+            { CurrencyType.DNA, new CurrencyStatus { amount = 300, multiplier = 1.0 } },
             { CurrencyType.Genome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.RedGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.PurpleGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
@@ -41,6 +45,25 @@ public class CurrencyManager : MonoBehaviour
             { CurrencyType.Research, new CurrencyStatus { amount = 5, multiplier = 1.0 } },
             { CurrencyType.DummyCurrency, new CurrencyStatus { amount = 0, multiplier = 1.0 } }
         };
+    }
+
+    public CurrencyType MostAlignedType
+    {
+        get
+        {
+            if (currencies[CurrencyType.RedGenome].amount > currencies[CurrencyType.GreenGenome].amount && currencies[CurrencyType.RedGenome].amount > currencies[CurrencyType.PurpleGenome].amount)
+            {
+                return CurrencyType.RedGenome;
+            }
+            else if (currencies[CurrencyType.GreenGenome].amount > currencies[CurrencyType.RedGenome].amount && currencies[CurrencyType.GreenGenome].amount > currencies[CurrencyType.PurpleGenome].amount)
+            {
+                return CurrencyType.GreenGenome;
+            }
+            else
+            {
+                return CurrencyType.PurpleGenome;
+            }
+        }
     }
 
     public void AddCurrency(CurrencyType type, int amount)
@@ -82,6 +105,19 @@ public class CurrencyManager : MonoBehaviour
             {
                 Debug.Log("Costs: " + cost);
                 currencies[cost.currencyType].amount -= cost.Amount;
+
+                if (cost.currencyType == CurrencyType.RedGenome && cost.Amount > 0)
+                {
+                    _redGenomesUsed += cost.Amount;
+                }
+                else if (cost.currencyType == CurrencyType.GreenGenome && cost.Amount > 0)
+                {
+                    _greenGenomesUsed += cost.Amount;
+                }
+                else if (cost.currencyType == CurrencyType.PurpleGenome && cost.Amount > 0)
+                {
+                    _purpleGenomesUsed += cost.Amount;
+                }
             }
             
             BroadcastMessage("OnCurrencyChanged");

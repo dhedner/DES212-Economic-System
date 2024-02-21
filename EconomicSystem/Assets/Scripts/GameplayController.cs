@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using System;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 [Flags]
 public enum GameplayButton
@@ -33,11 +34,20 @@ public class GameplayController : MonoBehaviour
         get; private set;
     } = 1;
 
+    public bool HasWon
+    {
+        get
+        {
+            return CurrentPhaseIndex >= phases.Length;
+        }
+    }
+
     public Phase[] phases;
-    private Phase currentPhase;
+    public UnityEvent OnWin;
+    public UnityEvent OnRestart;
+
     private CurrencyManager currencyManager;
     string currencyDisplayPath = "CurrencyDisplay/";
-    //string winScreenPath = "WinScreen/";
 
     public GameplayState GameplayState
     {
@@ -74,7 +84,6 @@ public class GameplayController : MonoBehaviour
     {
         currencyManager = GetComponentInParent<CurrencyManager>();
         phases[0].Activate();
-        currentPhase = phases[0];
         OnCurrencyChanged();
     }
 
@@ -86,33 +95,33 @@ public class GameplayController : MonoBehaviour
 
     public void Win()
     {
-        // Activate the win phase
         foreach (var phase in phases)
         {
             phase.Deactivate();
         }
 
-        phases[phases.Length - 1].Activate();
+        //phases[phases.Length - 1].Activate();
 
         // Enable canvas
-        //transform.GetChild(1).GetComponent<Canvas>().enabled = true;
+        transform.GetChild(6).GetComponent<Image>().enabled = true;
         // Set canvas to sorting order to the top
         //GameObject.Find("WinScreen").GetComponent<Canvas>().enabled = true;
-        //transform.GetChild(6).SetAsLastSibling();
+        //transform.GetChild(8).SetAsLastSibling();
 
+        OnWin.Invoke();
 
         BroadcastMessage("OnGameOver");
     }
 
     public void RestartGame()
     {
-        // Deactivate all phases and activate the first one, then reset the currency
-        foreach (var phase in phases)
-        {
-            phase.Deactivate();
-        }
-        phases[0].Activate();
         currencyManager.ResetAllCurrency();
+        phases[0].Activate();
+        UpdateCurrencyCounts();
+
+        transform.GetChild(6).GetComponent<Image>().enabled = false;
+
+        OnRestart.Invoke();
 
         BroadcastMessage("OnRestartGame");
     }
@@ -133,8 +142,8 @@ public class GameplayController : MonoBehaviour
 
     public void PhaseHasChanged()
     {
-        BroadcastMessage("OnNextPhase");
         CurrentPhaseIndex++;
+        BroadcastMessage("OnNextPhase");
     }
 
     private void UpdateCurrencyCounts()

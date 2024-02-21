@@ -1,34 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class SmoothMovement : MonoBehaviour
 {
     public Transform targetObject;
-    public Vector2 initialPosition;
+    //public Vector2 initialPosition;
     public Vector2 destinationPosition;
     public float speed;
     public float slowDownOffset;
     public float slowDownRate;
+    public bool easeIn;
+    public bool easeOut;
 
-    private Phase phase;
     private float initialSpeed;
+    private bool isMoving = false;
 
     void Start()
     {
         // Set the initial offscreen position
-        transform.position = initialPosition;
+        //initialPosition = transform.position;
         initialSpeed = speed;
-        phase = GetComponentInParent<Phase>();
     }
 
     void Update()
     {
-        if (phase.isActive)
+        if (!isMoving)
         {
-            MoveToDestination();
+            return;
         }
+
+        MoveToDestination();
     }
 
     public void MoveToDestination()
@@ -48,5 +53,15 @@ public class SmoothMovement : MonoBehaviour
 
         // Move the object towards the destination at the current speed
         targetObject.position = Vector2.MoveTowards(targetObject.position, destinationPosition, speed * Time.deltaTime);
+
+        if (distanceToDestination <= 0.01f)
+        {
+            isMoving = false;
+        }
+    }
+
+    public void StartMovement()
+    {
+        isMoving = true;
     }
 }

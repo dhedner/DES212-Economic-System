@@ -113,6 +113,11 @@ public class ActionButton : MonoBehaviour
         UpdateButtonState();
     }
 
+    public void OnGameOver()
+    {
+        UpdateButtonState();
+    }
+
     private void UpdateButtonState()
     {
         bool isEnabled = EnableCondition(this);

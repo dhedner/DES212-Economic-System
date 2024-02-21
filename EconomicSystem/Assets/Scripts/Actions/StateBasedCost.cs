@@ -4,27 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//[Serializable]
-//public class CostPoolSet
-//{
-//    public ActionCost[] ActionCosts;
-//    public ActionCost[] CostPool;
 
-//    override public string ToString()
-//    {
-//        string str = "ActionCosts: ";
-//        foreach (var cost in ActionCosts)
-//        {
-//            str += cost + ", ";
-//        }
-//        str += "CostPool: ";
-//        foreach (var cost in CostPool)
-//        {
-//            str += cost + ", ";
-//        }
-//        return str;
-//    }
-//}
 [Serializable]
 public class CostPoolSet
 {

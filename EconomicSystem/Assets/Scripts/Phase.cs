@@ -36,13 +36,18 @@ public class Phase : MonoBehaviour
         //    new ActionCost(CurrencyType.Research, LevelCost),
         //});
 
-        bool canEnablePhase = EnableCondition(this);
+        bool canEnablePhase = EnableCondition(this) && !gameplayController.HasWon;
 
         if (!isActive && canEnablePhase)
         {
             Activate();
             gameplayController.PhaseHasChanged();
         }
+    }
+
+    public void OnGameOver()
+    {
+        Deactivate();
     }
 
     public void Activate()

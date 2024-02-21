@@ -78,6 +78,10 @@ public class TelemetryWriter : MonoBehaviour
     public void OnRestartGame()
     {
         // When the game restarts, reset all local data
+        if (!enableTelemetry)
+        {
+            return;
+        }
         totalTurns = 0;
         trackerTurns = tracker.GetTotalClickCount();
         phaseTurns = new double[4];
