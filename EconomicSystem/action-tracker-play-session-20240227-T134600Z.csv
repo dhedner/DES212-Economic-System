@@ -1,0 +1,7 @@
+State;Action;Count
+Generate-1;Generate;56
+Generate, GeneticSequencer-1;Generate;5
+Generate, GeneticSequencer-1;GeneticSequencer;3
+Generate, Research, GeneticSequencer-1;Generate;1
+Generate, Research, GeneticSequencer-1;Research;1
+Generate, Stabilize-2;Generate;4

@@ -73,12 +73,13 @@ public class GameplayState : IComparable<GameplayState>, IEquatable<GameplayStat
 // Only for human players, not autoplay
 public class ActionTracker : MonoBehaviour
 {
-    public bool enabled = false;
+    public bool save = false;
+    public bool record = false;
+    public bool useDate;
+    public string trackerId;
 
-    public Autoplayer autoplayer;
-    public string filename;
-    public bool useLearnedData;
-
+    private string filename;
+    private string date;
     private IDictionary<GameplayState, SortedDictionary<GameplayButton, double>> clickCounts;
     private GameplayController controller;
 
@@ -86,6 +87,14 @@ public class ActionTracker : MonoBehaviour
     {
         clickCounts = new SortedDictionary<GameplayState, SortedDictionary<GameplayButton, double>>();
         controller = GetComponent<GameplayController>();
+
+        date = DateTime.Now.ToString("yyyyMMdd-\\THHmmss\\Z");
+        filename = $"action-tracker-{trackerId}";
+        if (useDate)
+        {
+            filename += $"-{date}";
+        }
+        filename += ".csv";
 
         LoadFromFile();
     }
@@ -97,10 +106,11 @@ public class ActionTracker : MonoBehaviour
 
     public void NotifyAction(GameplayButton button)
     {
-        if (autoplayer.autoplayActive)
+        if (!record)
         {
             return;
         }
+
         var state = controller.GameplayState;
         if (!clickCounts.ContainsKey(state))
         {
@@ -118,7 +128,7 @@ public class ActionTracker : MonoBehaviour
     public Dictionary<GameplayButton, double> GetActionDistribution(GameplayState state)
     {
         var distribution = new Dictionary<GameplayButton, double>();
-        if (!useLearnedData || !clickCounts.ContainsKey(state))
+        if (!clickCounts.ContainsKey(state))
         {
             Debug.LogWarning($"No click data for state={state}, using random actions");
 
@@ -164,7 +174,7 @@ public class ActionTracker : MonoBehaviour
 
     public void SaveToFile()
     {
-        if (!enabled)
+        if (!save)
         {
             return;
         }

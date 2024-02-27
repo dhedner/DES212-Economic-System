@@ -10,16 +10,16 @@ using static UnityEditor.Progress;
 public class TelemetryWriter : MonoBehaviour
 {
     public bool enableTelemetry = false;
+    public ActionTracker tracker;
 
     private CurrencyManager currencyManager;
-    private ActionTracker tracker;
     private GameplayController gameplayController;
 
     private double totalTurns;
-    private double trackerTurns;
     private double[] phaseTurns = new double[4];
     private CurrencyType[] currencies;
     private GameplayButton[] buttons;
+    private string date;
 
     public void Start()
     {
@@ -28,13 +28,12 @@ public class TelemetryWriter : MonoBehaviour
             return;
         }
         currencyManager = GetComponent<CurrencyManager>();
-        tracker = GetComponent<ActionTracker>();
         gameplayController = GetComponent<GameplayController>();
+
+        date = DateTime.Now.ToString("yyyyMMdd-\\THHmmss\\Z");
 
         currencies = new CurrencyType[Enum.GetNames(typeof(CurrencyType)).Length];
         buttons = new GameplayButton[Enum.GetNames(typeof(GameplayButton)).Length];
-
-        trackerTurns = tracker.GetTotalClickCount();
 
         WriteCurrencyData();
     }
@@ -46,7 +45,7 @@ public class TelemetryWriter : MonoBehaviour
         {
             return;
         }
-        totalTurns = tracker.GetTotalClickCount() - trackerTurns;
+        totalTurns = tracker.GetTotalClickCount();
 
         if (totalTurns % 10 == 0)
         {
@@ -65,7 +64,7 @@ public class TelemetryWriter : MonoBehaviour
         {
             return;
         }
-        phaseTurns[gameplayController.CurrentPhaseIndex] = totalTurns;
+        phaseTurns[gameplayController.CurrentPhaseIndex - 1] = totalTurns;
     }
 
     // Message being broadcast from the GameplayController when game is over
@@ -83,7 +82,6 @@ public class TelemetryWriter : MonoBehaviour
             return;
         }
         totalTurns = 0;
-        trackerTurns = tracker.GetTotalClickCount();
         phaseTurns = new double[4];
 
         WriteCurrencyData();
@@ -98,19 +96,15 @@ public class TelemetryWriter : MonoBehaviour
 
         Debug.Log("Writing button data");
 
-        if (!File.Exists("ButtonData.csv"))
+        if (!File.Exists($"ButtonData{date}.csv"))
         {
-            WriteToCSV("ButtonData.csv", string.Join(",", Enum.GetNames(typeof(GameplayButton))));
-        }
-        else
-        {
-            File.Delete("ButtonData.csv");
+            WriteToCSV($"ButtonData{date}.csv", string.Join(",", Enum.GetNames(typeof(GameplayButton))));
         }
 
         var buttonCounts = from GameplayButton type in Enum.GetValues(typeof(GameplayButton))
                            select tracker.GetButtonClickCount(type);
 
-        WriteToCSV("ButtonData.csv", string.Join(",", buttonCounts));
+        WriteToCSV($"ButtonData{date}.csv", string.Join(",", buttonCounts));
     }
 
     private void WritePhaseData()
@@ -119,19 +113,15 @@ public class TelemetryWriter : MonoBehaviour
         {
             return;
         }
-        
+
         Debug.Log("Writing phase data");
 
-        if (!File.Exists("TurnsAtPhaseStart.csv"))
+        if (!File.Exists($"TurnsAtPhaseStart{date}.csv"))
         {
-            WriteToCSV("TurnsAtPhaseStart.csv", "Phase1,Phase2,Phase3,Phase4");
-        }
-        else
-        {
-            File.Delete("TurnsAtPhaseStart.csv");
+            WriteToCSV($"TurnsAtPhaseStart{date}.csv", "Phase1,Phase2,Phase3,Phase4");
         }
 
-        WriteToCSV("TurnsAtPhaseStart.csv", string.Join(",", phaseTurns));
+        WriteToCSV($"TurnsAtPhaseStart{date}.csv", string.Join(",", phaseTurns));
     }
 
     private void WriteCurrencyData()
@@ -143,15 +133,15 @@ public class TelemetryWriter : MonoBehaviour
 
         Debug.Log("Writing currency data");
 
-        if (!File.Exists("CurrencyPerTurn.csv"))
+        if (!File.Exists($"CurrencyPerTurn{date}.csv"))
         {
-            WriteToCSV("CurrencyPerTurn.csv", string.Join(",", Enum.GetNames(typeof(CurrencyType))));
+            WriteToCSV($"CurrencyPerTurn{date}.csv", string.Join(",", Enum.GetNames(typeof(CurrencyType))));
         }
 
         var currencyAmounts = from CurrencyType x in Enum.GetValues(typeof(CurrencyType))
                               select currencyManager.GetCurrencyAmount(x);
 
-        WriteToCSV("CurrencyPerTurn.csv", string.Join(",", currencyAmounts));
+        WriteToCSV($"CurrencyPerTurn{date}.csv", string.Join(",", currencyAmounts));
     }
 
     private void WriteToCSV(string filename, string data)

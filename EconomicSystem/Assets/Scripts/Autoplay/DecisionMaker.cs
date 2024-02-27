@@ -6,18 +6,13 @@ using UnityEngine;
 
 public class DecisionMaker : MonoBehaviour
 {
-    private ActionTracker tracker;
-
-    public void Start()
-    {
-        tracker = GetComponentInParent<ActionTracker>();
-    }
+    public ActionTracker tracker;
 
     public GameplayButton MakeDecision(GameplayState state)
     {
         var random = new System.Random();
 
-       var distribution = tracker.GetActionDistribution(state);
+        var distribution = tracker.GetActionDistribution(state);
 
         // Roulette wheel selection
         var r = random.NextDouble();

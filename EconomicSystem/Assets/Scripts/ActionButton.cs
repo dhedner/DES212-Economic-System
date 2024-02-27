@@ -60,7 +60,7 @@ public class ActionButton : MonoBehaviour
     private Predicate<ActionButton> _enableCondition;
 
     private HoverDialogue hoverDialogue;
-    private ActionTracker actionTracker;
+    private ActionTracker[] actionTrackers;
     private CurrencyManager currencyManager
     {
         get 
@@ -103,7 +103,7 @@ public class ActionButton : MonoBehaviour
         UIButton.onClick.AddListener(OnButtonClick);
 
         hoverDialogue = GetComponent<HoverDialogue>();
-        actionTracker = GetComponentInParent<ActionTracker>();
+        actionTrackers = GetComponentsInParent<ActionTracker>();
 
         UpdateButtonState();
     }
@@ -138,7 +138,10 @@ public class ActionButton : MonoBehaviour
             return;
         }
 
-        actionTracker.NotifyAction(AssignedGameplayButton);
+        foreach (var tracker in actionTrackers)
+        {
+            tracker.NotifyAction(AssignedGameplayButton);
+        }
 
         currencyManager.SpendCurrency(ActionButtonCosts);
 

@@ -35,16 +35,29 @@ public class CurrencyManager : MonoBehaviour
     public CurrencyManager()
     {
         currencies = new Dictionary<CurrencyType, CurrencyStatus>{
-            { CurrencyType.GeneticMaterial, new CurrencyStatus { amount = 500, multiplier = 1.0 } },
-            { CurrencyType.DNA, new CurrencyStatus { amount = 300, multiplier = 1.0 } },
+            { CurrencyType.GeneticMaterial, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.DNA, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.Genome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.RedGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.PurpleGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.GreenGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
-            { CurrencyType.CellClusters, new CurrencyStatus { amount = 10, multiplier = 1.0 } },
-            { CurrencyType.Research, new CurrencyStatus { amount = 5, multiplier = 1.0 } },
+            { CurrencyType.CellClusters, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+            { CurrencyType.Research, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
             { CurrencyType.DummyCurrency, new CurrencyStatus { amount = 0, multiplier = 1.0 } }
         };
+
+        // Use for end of game testing
+        //currencies = new Dictionary<CurrencyType, CurrencyStatus>{
+        //    { CurrencyType.GeneticMaterial, new CurrencyStatus { amount = 500, multiplier = 1.0 } },
+        //    { CurrencyType.DNA, new CurrencyStatus { amount = 300, multiplier = 1.0 } },
+        //    { CurrencyType.Genome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+        //    { CurrencyType.RedGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+        //    { CurrencyType.PurpleGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+        //    { CurrencyType.GreenGenome, new CurrencyStatus { amount = 0, multiplier = 1.0 } },
+        //    { CurrencyType.CellClusters, new CurrencyStatus { amount = 10, multiplier = 1.0 } },
+        //    { CurrencyType.Research, new CurrencyStatus { amount = 5, multiplier = 1.0 } },
+        //    { CurrencyType.DummyCurrency, new CurrencyStatus { amount = 0, multiplier = 1.0 } }
+        //};
     }
 
     public CurrencyType MostAlignedType
