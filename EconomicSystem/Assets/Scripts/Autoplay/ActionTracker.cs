@@ -80,23 +80,16 @@ public class ActionTracker : MonoBehaviour
 
     private string filename;
     private string date;
-    private IDictionary<GameplayState, SortedDictionary<GameplayButton, double>> clickCounts;
+    private IDictionary<GameplayState, SortedDictionary<GameplayButton, double>> clickCounts 
+        = new SortedDictionary<GameplayState, SortedDictionary<GameplayButton, double>>();
     private GameplayController controller;
 
     public void Start()
     {
-        clickCounts = new SortedDictionary<GameplayState, SortedDictionary<GameplayButton, double>>();
         controller = GetComponent<GameplayController>();
 
         date = DateTime.Now.ToString("yyyyMMdd-\\THHmmss\\Z");
-        filename = $"action-tracker-{trackerId}";
-        if (useDate)
-        {
-            filename += $"-{date}";
-        }
-        filename += ".csv";
-
-        LoadFromFile();
+        Reload();
     }
 
     public void OnCurrencyChanged()
@@ -192,7 +185,7 @@ public class ActionTracker : MonoBehaviour
         }
     }
 
-    public void LoadFromFile()
+    public void LoadFromFile(string filename)
     {
         if (!File.Exists(filename))
         {
@@ -219,6 +212,18 @@ public class ActionTracker : MonoBehaviour
 
             clickCounts[state][action] = count;
         }
+    }
+
+    public void Reload()
+    {
+        filename = $"action-tracker-{trackerId}";
+        if (useDate)
+        {
+            filename += $"-{date}";
+        }
+        filename += ".csv";
+
+        LoadFromFile(filename);
     }
 
     public double GetTotalClickCount()

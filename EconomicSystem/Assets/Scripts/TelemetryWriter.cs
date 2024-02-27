@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
-using static UnityEditor.Progress;
 
 public class TelemetryWriter : MonoBehaviour
 {

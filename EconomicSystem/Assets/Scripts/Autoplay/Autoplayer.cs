@@ -8,6 +8,7 @@ public class Autoplayer : MonoBehaviour
 {
     public bool autoplayActive = false;
     public bool fastMode = false;
+    public PlayStyle playStyle = PlayStyle.Balanced;
 
     //public int actionDelay = 1000;
     private int actionDelay = 500;
@@ -41,6 +42,9 @@ public class Autoplayer : MonoBehaviour
         if (now - lastActionTime > TimeSpan.FromMilliseconds(actionDelay))
         {
             lastActionTime = now;
+
+            decisionMaker.playStyle = playStyle;
+
             var state = gameplayController.GameplayState;
             var action = decisionMaker.MakeDecision(state);
             gameplayController.TriggerAction(action);
@@ -84,5 +88,10 @@ public class Autoplayer : MonoBehaviour
         {
             fastMode = false;
         }
+    }
+
+    public void SetPlayStyle(int style)
+    {
+        playStyle = (PlayStyle)style;
     }
 }
