@@ -59,18 +59,17 @@ public class TelemetryWriter : MonoBehaviour
         {
             return;
         }
-        if (gameplayController.CurrentPhaseIndex >= phaseTurns.Length)
+        if (gameplayController.CurrentPhaseIndex >= phaseTurns.Length + 1)
         {
             return;
         }
-        phaseTurns[gameplayController.CurrentPhaseIndex - 1] = totalTurns;
+        phaseTurns[gameplayController.CurrentPhaseIndex - 2] = totalTurns;
     }
 
     // Message being broadcast from the GameplayController when game is over
     public void OnGameOver()
     {
-        WriteButtonData();
-        WritePhaseData();
+        phaseTurns[phaseTurns.Length - 1] = totalTurns;
     }
 
     public void OnRestartGame()
@@ -168,6 +167,8 @@ public class TelemetryWriter : MonoBehaviour
     private void OnDestroy()
     {
         // Write the data on termination
-        OnGameOver();
+        //OnGameOver();
+        WriteButtonData();
+        WritePhaseData();
     }
 }

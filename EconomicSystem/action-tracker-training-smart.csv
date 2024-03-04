@@ -1,0 +1,70 @@
+State;Action;Count
+Generate-1;Generate;118
+Generate, GeneticSequencer-1;GeneticSequencer;6
+Generate, Research, GeneticSequencer-1;Research;2
+Generate, Stabilize-2;Stabilize;34
+Generate, GeneticSequencer, Stabilize-2;Stabilize;4
+Generate, Stabilize, Recycle-2;Stabilize;88
+Generate, Stabilize, Recycle-2;Recycle;25
+Generate, GeneticSequencer, Stabilize, Recycle-2;Stabilize;78
+Generate, GeneticSequencer, Stabilize, Recycle-2;Recycle;39
+Generate, Research, GeneticSequencer, Stabilize, Recycle-2;Research;7
+Generate, Stabilize, Recycle, DNASynthesizer-2;DNASynthesizer;4
+Generate, Stabilize, Recycle, HelixSplitter-2;HelixSplitter;2
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter-2;Stabilize;2
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter-2;Recycle;2
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter-2;Stabilize;2
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter-2;Recycle;3
+Generate, Stabilize, Recycle-3;Stabilize;1
+Generate, Stabilize, Recycle-3;Recycle;1
+Generate, Stabilize, Recycle, Synthesize-3;Synthesize;2
+Generate, Research, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct-3;Research;1
+Generate, GeneticSequencer, Stabilize, Recycle, Synthesize-3;Synthesize;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize-3;Synthesize;5
+Generate, Research, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize-3;Research;1
+Generate, Stabilize, Recycle, AlignMutagen, Deconstruct-3;Deconstruct;2
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct-3;Synthesize;3
+Generate, Stabilize, Recycle, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, Synthesize, AlignMutagen, Deconstruct-3;Deconstruct;1
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment-3;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Synthesize;3
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Deconstruct;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Synthesize;14
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Deconstruct;4
+Generate, Research, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Research;6
+Generate, Stabilize, Recycle, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Synthesize;2
+Generate, Research, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Research;1
+Generate, Research, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment-3;Research;1
+Generate, Research, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-3;Research;1
+Generate, Research, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen-3;Research;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Synthesize;6
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-3;Deconstruct;2
+0-4;Release;2
+Generate, Stabilize, Recycle, Synthesize-4;Synthesize;1
+Generate, Stabilize, Recycle, AlignMutagen, Deconstruct-4;Deconstruct;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize-4;Synthesize;10
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct-4;AlignMutagen;1
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct-4;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, AlignMutagen, Deconstruct-4;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-4;Synthesize;6
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-4;Synthesize;48
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-4;AlignMutagen;40
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct-4;Deconstruct;30
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment-4;Synthesize;86
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment-4;AlignMutagen;72
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment-4;Deconstruct;57
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;Deconstruct;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;Synthesize;1
+Generate, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;Deconstruct;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;Synthesize;4
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;AlignMutagen;2
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;Deconstruct;3
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, DominantAlignment, RecessiveAlignment-4;DominantAlignment;2
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, Construct-4;Construct;1
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Deconstruct, Construct-4;Construct;1
+Generate, Stabilize, Recycle, Synthesize, AlignMutagen, Construct-4;Construct;1
+Generate, Stabilize, Recycle, Synthesize, Construct-4;Construct;1
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, Construct-4;Construct;4
+Generate, GeneticSequencer, Stabilize, Recycle, DNASynthesizer, HelixSplitter, Synthesize, AlignMutagen, Deconstruct, RecessiveAlignment, Construct-4;Construct;7

@@ -18,6 +18,7 @@ public class SmoothMovement : MonoBehaviour
 
     private float initialSpeed;
     private bool isMoving = false;
+    private float t = 0;
 
     void Start()
     {
@@ -36,25 +37,33 @@ public class SmoothMovement : MonoBehaviour
         MoveToDestination();
     }
 
+    float EaseInAndOut(float x)
+    {
+        return x < 0.5 ? 4 * x * x * x : 1 - Mathf.Pow(-2 * x + 2, 3) / 2;
+    }
+
     public void MoveToDestination()
     {
+        targetObject.position = Vector2.Lerp(targetObject.position, destinationPosition, EaseInAndOut(t));
+        t += speed * Time.deltaTime;
+
         float distanceToDestination = Vector2.Distance(targetObject.position, destinationPosition);
 
-        if (distanceToDestination <= slowDownOffset)
-        {
-            // Adjust the speed for slowing down
-            speed = Mathf.Lerp(initialSpeed * slowDownRate, initialSpeed, distanceToDestination / slowDownOffset);
-        }
-        else
-        {
-            // Reset the speed to its initial value if outside the slow down offset
-            speed = initialSpeed;
-        }
+        //if (distanceToDestination <= slowDownOffset)
+        //{
+        //    // Adjust the speed for slowing down
+        //    speed = Mathf.Lerp(initialSpeed * slowDownRate, initialSpeed, distanceToDestination / slowDownOffset);
+        //}
+        //else
+        //{
+        //    // Reset the speed to its initial value if outside the slow down offset
+        //    speed = initialSpeed;
+        //}
 
-        // Move the object towards the destination at the current speed
-        targetObject.position = Vector2.MoveTowards(targetObject.position, destinationPosition, speed * Time.deltaTime);
+        //// Move the object towards the destination at the current speed
+        //targetObject.position = Vector2.MoveTowards(targetObject.position, destinationPosition, speed * Time.deltaTime);
 
-        if (distanceToDestination <= 0.01f)
+        if (distanceToDestination <= 1.0f)
         {
             isMoving = false;
         }

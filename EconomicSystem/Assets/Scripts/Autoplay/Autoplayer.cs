@@ -51,6 +51,11 @@ public class Autoplayer : MonoBehaviour
         }
     }
 
+    public void OnGameOver()
+    {
+        autoplayActive = false;
+    }
+
     public void OnNextPhase()
     {
         if (autoplayActive)

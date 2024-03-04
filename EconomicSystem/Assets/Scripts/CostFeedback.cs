@@ -12,6 +12,7 @@ public class CostFeedback : MonoBehaviour
     public float moveDistance = 1f;
 
     private ActionButton actionButton;
+    private Autoplayer autoplayer;
     private Vector3 LastMousePosition;
     private Dictionary<CurrencyType, string> currencyNameStrings = new Dictionary<CurrencyType, string>()
     {
@@ -29,14 +30,21 @@ public class CostFeedback : MonoBehaviour
     public void Start()
     {
         actionButton = GetComponent<ActionButton>();
+        autoplayer = GetComponent<Autoplayer>();
     }
 
     public void GenerateFeedback()
     {
         LastMousePosition = Input.mousePosition;
+        LastMousePosition.y += 10;
         GameObject textObj = Instantiate(floatingTextPrefab, LastMousePosition, Quaternion.identity, transform);
         TextMeshProUGUI text = textObj.GetComponent<TextMeshProUGUI>();
         CanvasGroup canvasGroup = textObj.GetComponent<CanvasGroup>();
+
+        //if (autoplayer.autoplayActive)
+        //{
+        //    textObj.transform.position = actionButton.transform.position;
+        //}
 
         string costsString = "";
         foreach (var cost in actionButton.ActionButtonCosts)
