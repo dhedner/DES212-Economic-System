@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d70f5c4cfd3b87c4fba5f39c57d1c6ec
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - geneticMaterial: {fileID: 11400000, guid: e27b9f24cf837de41b6b122d23e6af86, type: 2}
+  - DNA: {fileID: 11400000, guid: 2b1e31178c3cd274aa6d614d40ee668b, type: 2}
+  - genome: {fileID: 11400000, guid: 3e08ebd7228919f4b8c4171b04bb495c, type: 2}
+  - GenerateButton: {instanceID: 0}
+  - ResearchButton: {instanceID: 0}
+  - StabilizeButton: {instanceID: 0}
+  - RecycleButton: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
